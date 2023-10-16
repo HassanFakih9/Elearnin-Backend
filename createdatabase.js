@@ -1,9 +1,12 @@
 const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: ''
+  host: 'db4free.net',
+  user: 'hassanatsimplon',
+  password: '12ab34xy',
+  database: 'languagelearning',
+  port: 3306 
+    
 });
 
 connection.connect((err) => {
@@ -12,10 +15,10 @@ connection.connect((err) => {
 });
 
 const createDatabase = () => {
-    connection.query('CREATE DATABASE IF NOT EXISTS LanguageLearning', (err, result) => {
+    connection.query('CREATE DATABASE IF NOT EXISTS languagelearning', (err, result) => {
         if (err) throw err;
         console.log('Database created or already exists');
-        connection.changeUser({ database: 'LanguageLearning' }, (err) => {
+        connection.changeUser({ database: 'languagelearning' }, (err) => {
             if (err) throw err;
             console.log('Using LanguageLearning database');
             createTables();
@@ -25,10 +28,12 @@ const createDatabase = () => {
 
 const createTables = () => {
     const databaseConnection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'LanguageLearning'
+
+      host: 'db4free.net',
+      user: 'hassanatsimplon',
+      password: '12ab34xy',
+      database: 'languagelearning',
+      port: 3306 
     });
 
     const usersTable = `CREATE TABLE IF NOT EXISTS users (

@@ -5,10 +5,11 @@ const cors = require('cors');
 const router = express.Router();
 router.use(cors());
 const databaseConnection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'LanguageLearning',
+  host: 'db4free.net',
+  user: 'hassanatsimplon',
+  password: '12ab34xy',
+  database: 'languagelearning',
+  port: 3306 
 });
 
 databaseConnection.connect((err) => {
