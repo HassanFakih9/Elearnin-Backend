@@ -18,7 +18,7 @@ connection.getConnection((err) =>{
         console.log(err)
         return;
     }
-    console.log('woohoo connected successfully!');
+    console.log('WOOHOOOO connected successfully!');
 });
 
 

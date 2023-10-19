@@ -6,7 +6,7 @@ const addLesson = async (req,res) => {
     const {lesson_name, overview, content, level_id} = req.body;
     try{
         const result = await db.query(
-            `INSERT INTO lessons (lesson_name, overview, content, level_id) VALUES (?,?,?,?)`,
+            `INSERT INTO lessons (lesson_name, overview, content, level_id) VALUES (?,?,?,?)`, 
             [lesson_name, overview, content, level_id]
         );
         console.log(result);

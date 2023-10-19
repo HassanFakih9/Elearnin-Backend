@@ -7,10 +7,17 @@ const PORT = process.env.PORT;
 require('./config/db');
 const usersRouter = require('./routes/usersRoute'); 
 const lessonRoutes = require('./routes/lessonRoute');
+const levelsRouter = require('./routes/levelRoute');
+const languagesRouter = require('./routes/languageRoute');
+
+
 
 app.use(bodyParser.json());
 app.use('/users', usersRouter);
 app.use('/lessons', lessonRoutes);
+app.use('/levels', levelsRouter);
+app.use('/languages', languagesRouter);
+
 app.use(cors());
 
 app.listen(PORT, () =>{

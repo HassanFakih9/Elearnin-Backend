@@ -8,6 +8,6 @@ const { addLesson, getLessonByID, updateLesson, deleteLesson} = require('../cont
 router.post('/add', addLesson);
 router.get('/get/:id', getLessonByID);
 router.put('/update/:id', updateLesson);
-router.delete('/delete/:lesson_id', deleteLesson);
+router.delete('/delete/:id', deleteLesson);
 
 module.exports = router;
