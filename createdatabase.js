@@ -84,8 +84,8 @@ const createTables = () => {
 
     const enrolledLevelsTable = `CREATE TABLE IF NOT EXISTS enrolledLevels (
     enrolledLevels_id INT AUTO_INCREMENT PRIMARY KEY,
-    level_id INT UNIQUE,
-    user_id INT UNIQUE,
+    level_id INT,
+    user_id INT,
     FOREIGN KEY (level_id) REFERENCES levels(level_id),
     FOREIGN KEY (user_id) REFERENCES users(id)
   )`;
@@ -146,6 +146,8 @@ const createTables = () => {
         console.log('Database connection closed');
     });
 };
+
+
 
 createDatabase();
 

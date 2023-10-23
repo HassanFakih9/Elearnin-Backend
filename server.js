@@ -8,8 +8,8 @@ const usersRouter = require('./routes/users');
 const port = 5000;
 app.use(bodyParser.json());
 app.use('/users', usersRouter);
-
-
+const studentsRouter = require('./routes/students'); 
+app.use('/students', studentsRouter);
 const connection = mysql.createConnection({
   host: 'db4free.net',
   user: 'hassanatsimplon',
@@ -37,7 +37,7 @@ app.post('/login', (req, res) => {
       res.status(401).json({ message: 'Invalid email or password' });
     } else {
       const user = result[0];
-      res.json({ role: user.role });
+      res.json({ role: user.role, userId: user.id });
     }
   });
 });
