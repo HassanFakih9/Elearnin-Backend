@@ -3,33 +3,18 @@ const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-require('dotenv').config();
 const PORT = process.env.PORT;
+require('dotenv').config();
 require('./config/db');
-app.use(cors());
 const usersRouter = require('./routes/users');
 const assessmentRoutes = require('./routes/assessmentRoute');
 const userAssessmentRoutes = require('./routes/userAssessmentRoute');
-const port = 5000;
+
+app.use(cors());
 app.use(bodyParser.json());
 app.use('/users', usersRouter);
 app.use('/assessment', assessmentRoutes);
 app.use('/userAssessment', userAssessmentRoutes);
-
-
-const connection = mysql.createConnection({
-  host: 'db4free.net',
-  user: 'hassanatsimplon',
-  password: '12ab34xy',
-  database: 'languagelearning',
-  port: 3306
-});
-
-connection.connect((err) => {
-  if (err) throw err;
-  console.log('Connected to MySQL server!');
-});
-
 
 
 app.post('/login', (req, res) => {
