@@ -3,11 +3,18 @@ const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
+require('dotenv').config();
+const PORT = process.env.PORT;
+require('./config/db');
 app.use(cors());
-const usersRouter = require('./routes/users'); 
+const usersRouter = require('./routes/users');
+const assessmentRoutes = require('./routes/assessmentRoute');
+const userAssessmentRoutes = require('./routes/userAssessmentRoute');
 const port = 5000;
 app.use(bodyParser.json());
 app.use('/users', usersRouter);
+app.use('/assessment', assessmentRoutes);
+app.use('/userAssessment', userAssessmentRoutes);
 
 
 const connection = mysql.createConnection({
@@ -15,7 +22,7 @@ const connection = mysql.createConnection({
   user: 'hassanatsimplon',
   password: '12ab34xy',
   database: 'languagelearning',
-  port: 3306 
+  port: 3306
 });
 
 connection.connect((err) => {
@@ -29,7 +36,7 @@ app.post('/login', (req, res) => {
   const { email, password } = req.body;
 
   const query = `SELECT * FROM users WHERE email = ? AND password = ?`;
-  
+
   connection.query(query, [email, password], (err, result) => {
     if (err) throw err;
 
@@ -59,30 +66,30 @@ app.get('/user', (req, res) => {
 
 // Signup 
 app.post('/signup', (req, res) => {
-    const { name, email, password, role } = req.body;
-  
-    if (!name || !email || !password || !role) {
-      res.status(400).json({ message: 'Please fill in all fields' });
-      return;
+  const { name, email, password, role } = req.body;
+
+  if (!name || !email || !password || !role) {
+    res.status(400).json({ message: 'Please fill in all fields' });
+    return;
+  }
+
+
+  const checkQuery = `SELECT * FROM users WHERE email = ?`;
+  connection.query(checkQuery, [email], (err, result) => {
+    if (err) throw err;
+
+    if (result.length > 0) {
+      res.status(400).json({ message: 'Email already exists' });
+    } else {
+
+      const createUserQuery = `INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`;
+      connection.query(createUserQuery, [name, email, password, role], (err, result) => {
+        if (err) throw err;
+        res.json({ message: 'User created successfully!' });
+      });
     }
-  
- 
-    const checkQuery = `SELECT * FROM users WHERE email = ?`;
-    connection.query(checkQuery, [email], (err, result) => {
-      if (err) throw err;
-  
-      if (result.length > 0) {
-        res.status(400).json({ message: 'Email already exists' });
-      } else {
-   
-        const createUserQuery = `INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`;
-        connection.query(createUserQuery, [name, email, password, role], (err, result) => {
-          if (err) throw err;
-          res.json({ message: 'User created successfully!' });
-        });
-      }
-    });
   });
+});
 
 
 
