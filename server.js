@@ -1,10 +1,10 @@
-const express = require('express');
+require('dotenv').config();
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
-const cors = require('cors');
+const express = require('express');
 const app = express();
 const PORT = process.env.PORT;
-require('dotenv').config();
+const cors = require('cors');
 require('./config/db');
 const usersRouter = require('./routes/users');
 const assessmentRoutes = require('./routes/assessmentRoute');
@@ -14,25 +14,25 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/users', usersRouter);
 app.use('/assessment', assessmentRoutes);
-app.use('/userAssessment', userAssessmentRoutes);
+app.use('/userAssessment', userAssessmentRoutes),
 
 
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
+  app.post('/login', (req, res) => {
+    const { email, password } = req.body;
 
-  const query = `SELECT * FROM users WHERE email = ? AND password = ?`;
+    const query = `SELECT * FROM users WHERE email = ? AND password = ?`;
 
-  connection.query(query, [email, password], (err, result) => {
-    if (err) throw err;
+    connection.query(query, [email, password], (err, result) => {
+      if (err) throw err;
 
-    if (result.length === 0) {
-      res.status(401).json({ message: 'Invalid email or password' });
-    } else {
-      const user = result[0];
-      res.json({ role: user.role });
-    }
+      if (result.length === 0) {
+        res.status(401).json({ message: 'Invalid email or password' });
+      } else {
+        const user = result[0];
+        res.json({ role: user.role });
+      }
+    });
   });
-});
 
 
 app.get('/user', (req, res) => {
@@ -76,8 +76,6 @@ app.post('/signup', (req, res) => {
   });
 });
 
-
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on PORT ${PORT}`);
 });
