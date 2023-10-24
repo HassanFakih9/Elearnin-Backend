@@ -82,26 +82,47 @@ router.get('/lessons', (req, res) => {
     });
 });
 
-// Add a new API endpoint to fetch enrolled levels for a student
-router.get('/enrolled-levels', (req, res) => {
-    const { userId } = req.query;
+
+  router.get('/enrolled-levels', (req, res) => {
+    const userId = req.query.userId;
+    const languageId = req.query.language_id;
   
     const query = `
       SELECT levels.level_id, levels.level_name
       FROM enrolledLevels
       JOIN levels ON enrolledLevels.level_id = levels.level_id
-      WHERE enrolledLevels.user_id = ?;
+      WHERE enrolledLevels.user_id = ? AND levels.language_id = ?;
     `;
   
-    connection.query(query, [userId], (err, result) => {
+    connection.query(query, [userId, languageId], (err, result) => {
       if (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to retrieve enrolled levels' });
       } else {
-        console.log(result)
         res.json(result);
       }
     });
   });
   
+  router.get('/api/lessons', (req, res) => {
+    const selectedLanguage = req.query.language;
+    const selectedLevel = req.query.level;
+    const enrolledLevels = req.query.enrolledLevels.split(',').map(Number); // Assuming enrolledLevels is passed as a comma-separated string of level IDs
+  
+    const query = `
+      SELECT * FROM lessons
+      INNER JOIN levels ON lessons.level_id = levels.level_id
+      WHERE levels.language_id = ? AND levels.level_name = ? AND levels.level_id IN (?)
+    `;
+  
+    connection.query(query, [selectedLanguage, selectedLevel, enrolledLevels], (err, rows) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to retrieve lessons' });
+      } else {
+        res.json(rows);
+      }
+    });
+  });
+
 module.exports = router;
