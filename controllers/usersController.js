@@ -44,7 +44,7 @@ const deleteUserQuery = async (req, res) => {
   });
 };
 
-/*delete*/
+/*update*/
 const updateUserQuery = async (req, res) => {
 const { id } = req.params;
   const { name, email, password } = req.body; 

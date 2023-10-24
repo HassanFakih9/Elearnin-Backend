@@ -1,27 +1,91 @@
 const db = require ('../config/db');
-
+const axios = require('axios');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+// const FormData = require('form-data');
 
 /*post*/
-const addLanguage = async (req,res) => {
-    const {language_name, language_img} = req.body;
-    try{
-        const result = await db.query(
-            `INSERT INTO languages (language_name, language_img) VALUES (?,?)`, 
-            [language_name, language_img]
-        );
-        console.log(result);
-        res.status(201).json({
-            success: true,
-            message: 'Language added successfully',
-          });
-        } catch (error) {
-            res.status(400).json({
-              success: false,
-              message: 'Unable to add new language',
-              error,
-            });
-          }
-        };
+const uploadDirectory = path.join(__dirname, '..', 'uploads');
+fs.mkdirSync(uploadDirectory, { recursive: true });
+
+
+const storage = multer.diskStorage({
+  destination: uploadDirectory,
+  filename: (req, file, cb) => {
+ 
+    const filename = `${Date.now()}-${file.originalname}`;
+    cb(null, filename);
+  },
+});
+
+const upload = multer({ storage :storage});
+
+
+
+const addLanguage =  async (req, res) => {
+  const { language_name, language_img } = req.body;
+  try {
+    const imageFilename = req.file.filename; // Get the uploaded image's filename
+
+    const result = await db.query(
+                'INSERT INTO languages (language_name, language_img) VALUES (?, ?)',
+                [language_name, imageFilename]
+            );
+
+            console.log(result);
+                  res.status(201).json({
+                      success: true,
+                      message: 'Language added successfully',
+                  });
+              } catch (error) {
+                  res.status(400).json({
+                      success: false,
+                      message: 'Unable to add new language',
+                      error,
+                  });
+              }
+            };
+
+
+ 
+
+
+
+// const addLanguage = async (req, res) => {
+//   const { language_name, language_img } = req.body;
+//   try {
+
+//     const formData = new FormData();
+
+//     formData.append('key', '83342237eeb1faeb63a4c76bbafef147');
+//     formData.append('image', req.file.buffer.toString('base64'));
+//     const response = await axios.post('https://api.imgbb.com/1/upload');
+    
+//       const imageUrl = response.data.url
+
+//       // Insert the language into your database
+//       const result = await db.query(
+//           'INSERT INTO languages (language_name, language_img) VALUES (?, ?)',
+//           [language_name, imageUrl]
+//       );
+
+//       console.log(result);
+//       res.status(201).json({
+//           success: true,
+//           message: 'Language added successfully',
+//       });
+//   } catch (error) {
+//       res.status(400).json({
+//           success: false,
+//           message: 'Unable to add new language',
+//           error,
+//       });
+//   }
+// };
+
+
+ 
 
     /*get*/
     const getLanguagebyID= async (req, res) => {
@@ -117,8 +181,6 @@ const addLanguage = async (req,res) => {
             }
           };
           
-        
-       
-    
+      
         module.exports = { addLanguage, getLanguagebyID, getAllLanguages,updateLanguage, deleteLanguage};
    

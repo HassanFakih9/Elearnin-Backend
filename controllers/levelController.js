@@ -117,7 +117,6 @@ const addLevel = async (req,res) => {
           };
           
         
-       
     
         module.exports = { addLevel, getLevelByID, getAllLevels, updateLevel, deleteLevel};
    
