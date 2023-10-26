@@ -11,6 +11,7 @@ const usersRouter = require('./routes/usersRoute');
 const lessonRoutes = require('./routes/lessonRoute');
 const levelsRouter = require('./routes/levelRoute');
 const languagesRouter = require('./routes/languageRoute');
+// const imageUploader = require ('../extra/imageUploader');
 
 
 
@@ -20,6 +21,7 @@ app.use('/users', usersRouter);
 app.use('/lessons', lessonRoutes);
 app.use('/levels', levelsRouter);
 app.use('/languages', languagesRouter);
+
 
 
 
@@ -85,7 +87,7 @@ app.get('/user', (req, res) => {
 app.post('/signup', (req, res) => {
   const { name, email, password, role } = req.body;
   
-  if (!name || !email || !password || !role) {
+  if (!name || !email || !password || !role ) {
     res.status(400).json({ message: 'Please fill in all fields' });
     return;
   }

@@ -1,5 +1,6 @@
 const db = require ('../config/db');
 
+
    /*get*/
    const getUsersQuery = async (req, res) => {
     const { role } = req.params;
