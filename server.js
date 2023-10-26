@@ -15,6 +15,7 @@ const usersRouter = require('./routes/usersRoute');
 const lessonRoutes = require('./routes/lessonRoute');
 const levelsRouter = require('./routes/levelRoute');
 const languagesRouter = require('./routes/languageRoute');
+const attendanceRoute = require('./routes/attendanceRoute');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -24,6 +25,7 @@ app.use('/userAssessment', userAssessmentRoutes),
 app.use('/lessons', lessonRoutes);
 app.use('/levels', levelsRouter);
 app.use('/languages', languagesRouter);
+app.use('/attendance', attendanceRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);

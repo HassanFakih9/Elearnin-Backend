@@ -2,80 +2,76 @@ const db = require ('../config/db');
 
 
 /*post*/
-const addLesson = async (req,res) => {
-    const {lesson_name, overview, content, level_id} = req.body;
+const addAttendance = async (req,res) => {
+    const {attendance_day, lesson_id , user_id} = req.body;
     try{
         const result = await db.query(
-<<<<<<< HEAD
-            `INSERT INTO lessons (lesson_name, overview, content, level_id) VALUES (?,?,?,?)`, 
-=======
-            `INSERT INTO lessons (lesson_name, overview, content, level_id) VALUES (?,?,?,?)`,
->>>>>>> Attendance
-            [lesson_name, overview, content, level_id]
+            `INSERT INTO  attendance (attendance_day , lesson_id , user_id) VALUES (?,?,?)`,
+            [attendance_day , lesson_id , user_id]
         );
         console.log(result);
         res.status(201).json({
             success: true,
-            message: 'Lesson added successfully',
+            message: 'Attendance added successfully',
           });
         } catch (error) {
             res.status(400).json({
               success: false,
-              message: 'Unable to add new lesson',
+              message: 'Unable to add new attendance',
               error,
             });
           }
         };
 
     /*get*/
-    const getLessonByID = async (req, res) => {
+    const getAttendanceByID = async (req, res) => {
         try {
-          const [result] = await db.query(`SELECT * FROM lessons WHERE lesson_id = ?`, [
+          const [result] = await db.query(`SELECT * FROM lessons WHERE user_id = ?`, [
             req.params.id,
           ]);
           res.status(200).json({
             success: true,
-            message: 'Lesson data retrieved successfully',
+            message: 'Attendance data retrieved successfully',
             data: result,
           });
         } catch (error) {
           res.status(400).json({
             success: false,
-            message: 'Unable to get lesson',
+            message: 'Unable to get attendance',
             error,
           });
         }
       };
 
       /*put*/
-      const updateLesson = async (req, res) => {
-        const {lesson_name, overview, content, level_id} = req.body;
+      const updateAttendance = async (req, res) => {
+        const {attendance_day , lesson_id , user_id} = req.body;
     try{
         const result = await db.query(
-            `UPDATE lessons SET lesson_name=?, overview=?, content=?, level_id=? WHERE lesson_id = ?`, [
-               lesson_name, overview, content, level_id, req.params.id
+            `UPDATE attendance SET attendance_day=?, lesson_id=?, user_id=? WHERE lesson_id = ?`, [
+                attendance_day , lesson_id , user_id, req.params.id
             ]);
             
         
         console.log(result);
         res.status(201).json({
             success: true,
-            message: 'Lesson updates successfully',
+            message: 'Attendance updates successfully',
           });
         } catch (error) {
             res.status(400).json({
               success: false,
-              message: 'Unable to update the lesson',
+              message: 'Unable to update the attendance',
               error,
             });
           }
         };
 
         /*delete*/
-        const deleteLesson = async (req, res) => {
+        const deleteAttendance = async (req, res) => {
             try {
               const [result] = await db.query(
-                'DELETE FROM lessons WHERE lesson_id = ?',
+                'DELETE FROM attendance WHERE user_id = ?',
                 [req.params.id]
               );
           
@@ -84,18 +80,18 @@ const addLesson = async (req,res) => {
               if (result.affectedRows > 0) {
                 res.status(204).json({
                   success: true,
-                  message: 'Lesson deleted successfully',
+                  message: 'Attendance deleted successfully',
                 });
               } else {
                 res.status(404).json({
                   success: false,
-                  message: 'Lesson not found',
+                  message: 'Attendance not found',
                 });
               }
             } catch (error) {
               res.status(400).json({
                 success: false,
-                message: 'Unable to delete the lesson',
+                message: 'Unable to delete the attendance',
                 error: error.message
               });
             }
@@ -104,5 +100,5 @@ const addLesson = async (req,res) => {
         
        
     
-        module.exports = { addLesson, getLessonByID, updateLesson, deleteLesson};
+        module.exports = { addAttendance, getAttendanceByID, updateAttendance, deleteAttendance};
    
