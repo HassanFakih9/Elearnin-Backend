@@ -15,10 +15,11 @@ const connection = mysql.createPool({
 
 connection.getConnection((err) => {
     if (err) {
-        console.log(err);
+        console.log(err)
         return;
     }
-    console.log('connected successfully');
+    console.log('WOOHOOOO connected successfully!');
 });
+
 
 module.exports = connection.promise();
