@@ -26,10 +26,6 @@ app.use('/levels', levelsRouter);
 app.use('/languages', languagesRouter);
 app.use('/attendance', attendanceRoute);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on PORT ${PORT}`);
-});
-
 const DATABASE_HOST = process.env.DATABASE_HOST;
 const DATABASE_USER = process.env.DATABASE_USER;
 const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD;
@@ -129,10 +125,8 @@ app.post('/signup', (req, res) => {
   });
 })
 
-
-
-
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT} `);
 });
+
 module.exports = connection.promise();
