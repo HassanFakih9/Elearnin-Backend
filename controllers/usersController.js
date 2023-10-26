@@ -1,28 +1,31 @@
 const db = require ('../config/db');
 
 
+
+
    /*get*/
    const getUsersQuery = async (req, res) => {
     const { role } = req.params;
   const { name, email } = req.query;
 
-  let getUsersQuery = `SELECT * FROM users WHERE role = ?`;
+  let usersQuery = `SELECT * FROM users WHERE role = ?`;
 
   if (name) {
-    getUsersQuery += ` AND name LIKE '%${name}%'`;
+    usersQuery += ` AND name LIKE '%${name}%'`;
   }
   if (email) {
-    getUsersQuery += ` AND email LIKE '%${email}%'`;
+    usersQuery += ` AND email LIKE '%${email}%'`;
   }
-
-  databaseConnection.query(getUsersQuery, [role], (err, rows) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error fetching users');
-    } else {
-      res.status(200).json(rows);
+console.log(usersQuery);
+ const result = await db.query(usersQuery, [role]) 
+    if (result) {
+      console.log('Hello');
+       res.status(200).json(result);
+      } else {
+      console.log('err');
+       res.status(500).send('Error fetching users');
     }
-  });
+  
 };
 
 /*put*/
@@ -31,7 +34,7 @@ const deleteUserQuery = async (req, res) => {
   const { role } = req.query;
   const deleteUserQuery = `DELETE FROM users WHERE id = ? AND role = ?`;
 
-  databaseConnection.query(deleteUserQuery, [id, role], (err, result) => {
+  db.query(deleteUserQuery, [id, role], (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).send('Error deleting user');
@@ -52,7 +55,7 @@ const { id } = req.params;
 
   const updateUserQuery = `UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?`;
 
-  databaseConnection.query(
+  db.query(
     updateUserQuery,
     [name, email, password, id],
     (err, result) => {
