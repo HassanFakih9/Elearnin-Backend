@@ -9,5 +9,16 @@
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.6.1",
     "nodemon": "^3.0.1"
-  }
+  },
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "name": "elearning-gr6-backend",
+  "description": "��#\u0000 \u0000E\u0000l\u0000e\u0000a\u0000r\u0000n\u0000i\u0000n\u0000g\u0000-\u0000G\u0000r\u00006\u0000-\u0000B\u0000a\u0000c\u0000k\u0000e\u0000n\u0000d\u0000\r\u0000 \u0000",
+  "version": "1.0.0",
+  "main": "createdatabase.js",
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

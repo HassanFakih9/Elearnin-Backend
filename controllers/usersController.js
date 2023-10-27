@@ -1,27 +1,31 @@
 const db = require ('../config/db');
 
+
+
+
    /*get*/
    const getUsersQuery = async (req, res) => {
     const { role } = req.params;
   const { name, email } = req.query;
 
-  let getUsersQuery = `SELECT * FROM users WHERE role = ?`;
+  let usersQuery = `SELECT * FROM users WHERE role = ?`;
 
   if (name) {
-    getUsersQuery += ` AND name LIKE '%${name}%'`;
+    usersQuery += ` AND name LIKE '%${name}%'`;
   }
   if (email) {
-    getUsersQuery += ` AND email LIKE '%${email}%'`;
+    usersQuery += ` AND email LIKE '%${email}%'`;
   }
-
-  db.query(getUsersQuery, [role], (err, rows) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error fetching users');
-    } else {
-      res.status(200).json(rows);
+console.log(usersQuery);
+ const result = await db.query(usersQuery, [role]) 
+    if (result) {
+      console.log('Hello');
+       res.status(200).json(result);
+      } else {
+      console.log('err');
+       res.status(500).send('Error fetching users');
     }
-  });
+  
 };
 
 /*put*/
