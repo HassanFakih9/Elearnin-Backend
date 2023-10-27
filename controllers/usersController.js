@@ -14,7 +14,7 @@ const db = require ('../config/db');
     getUsersQuery += ` AND email LIKE '%${email}%'`;
   }
 
-  databaseConnection.query(getUsersQuery, [role], (err, rows) => {
+  db.query(getUsersQuery, [role], (err, rows) => {
     if (err) {
       console.error(err);
       res.status(500).send('Error fetching users');
@@ -30,7 +30,7 @@ const deleteUserQuery = async (req, res) => {
   const { role } = req.query;
   const deleteUserQuery = `DELETE FROM users WHERE id = ? AND role = ?`;
 
-  databaseConnection.query(deleteUserQuery, [id, role], (err, result) => {
+  db.query(deleteUserQuery, [id, role], (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).send('Error deleting user');
@@ -51,7 +51,7 @@ const { id } = req.params;
 
   const updateUserQuery = `UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?`;
 
-  databaseConnection.query(
+  db.query(
     updateUserQuery,
     [name, email, password, id],
     (err, result) => {
