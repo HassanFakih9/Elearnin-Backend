@@ -153,7 +153,16 @@ const addLanguage = async (req, res) => {
               });
             }
           };
+
+          const getLanguagebyTeacherId = async (req, res) => {
+            const teacher_id = req.params.teacher_id; // Use teacher_id parameter
+          
+            const [response] = await db.query('SELECT * FROM languages WHERE teacher_id = ?', [teacher_id]);
+            if (response)
+                res.status(200).json({ data: response });
+              else
+                res.status(500).json({ error: 'Internal server error' });}
           
       
-        module.exports = { addLanguage, getLanguagebyID, getAllLanguages,updateLanguage, deleteLanguage};
+        module.exports = { addLanguage, getLanguagebyID, getAllLanguages,updateLanguage, deleteLanguage, getLanguagebyTeacherId};
    

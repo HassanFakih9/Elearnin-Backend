@@ -115,8 +115,17 @@ const addLevel = async (req,res) => {
               });
             }
           };
+
+          const getLevelByLanguage = async (req, res) => {
+            const language_id = req.params.language_id; 
+          
+            const [response] = await db.query('SELECT * FROM levels WHERE language_id = ?', [language_id]);
+            if (response)
+                res.status(200).json({ data: response });
+              else
+                res.status(500).json({ error: 'Internal server error' });}
           
         
     
-        module.exports = { addLevel, getLevelByID, getAllLevels, updateLevel, deleteLevel};
+        module.exports = { addLevel, getLevelByID, getAllLevels, updateLevel, deleteLevel, getLevelByLanguage};
    
