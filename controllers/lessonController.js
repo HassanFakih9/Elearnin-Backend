@@ -125,15 +125,6 @@ const addLesson = async (req,res) => {
                 res.status(200).json({ data: response });
               else
                 res.status(500).json({ error: 'Internal server error' });
-
-            // , (error, results) => {
-            //   if (error) {
-            //     console.error('Error fetching lessons:', error);
-            //     res.status(500).json({ error: 'Internal server error' });
-            //   } else {
-            //     res.status(200).json({ data: results });
-            //   }
-            // });
           };
           
         
