@@ -10,6 +10,8 @@ const levelsRouter = require('./routes/levelRoute');
 const languagesRouter = require('./routes/languageRoute');
 const usersRouter = require('./routes/userRoute');
 const enrolledLevelsRouter = require('./routes/enrolledLevelsRoute');
+const assessmentRoutes = require('./routes/assessmentRoute');
+const userAssessmentRoutes = require('./routes/userAssessmentRoute');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,7 +20,9 @@ app.use('/levels', levelsRouter);
 app.use('/languages', languagesRouter);
 app.use('/users', usersRouter);
 app.use('/enroll', enrolledLevelsRouter);
+app.use('/assessment', assessmentRoutes);
+app.use('/userAssessment', userAssessmentRoutes),
 
-app.listen(PORT, () => {
-  console.log(`Server is running on PORT ${PORT}`);
-});
+  app.listen(PORT, () => {
+    console.log(`Server is running on PORT ${PORT}`);
+  });
