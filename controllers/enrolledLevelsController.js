@@ -84,26 +84,5 @@ const getEnrolledLevels = async (req, res) => {
     }
 };
 
-const getLessonsByEnrolledLevels = async (req, res) => {
-    const selectedLanguage = req.query.language;
-    const selectedLevel = req.query.level;
-    // const enrolledLevels = req.query.enrolledLevels.split(',').map(Number); // Assuming enrolledLevels is passed as a comma-separated string of level IDs
 
-    try {
-        const query = `
-            SELECT lessons.*
-            FROM lessons
-            INNER JOIN levels ON lessons.level_id = levels.level_id
-            WHERE levels.language_id = ? AND levels.level_name = ?
-        `;
-
-        const [rows] = await db.query(query, [selectedLanguage, selectedLevel]);
-
-        res.status(200).json(rows);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Failed to retrieve lessons' });
-    }
-};
-
-module.exports = { addEnroll, getLanguages, getLevelsByLanguage, getLessonsbylevel, getEnrolledLevels, getLessonsByEnrolledLevels };
+module.exports = { addEnroll, getLanguages, getLevelsByLanguage, getLessonsbylevel, getEnrolledLevels };

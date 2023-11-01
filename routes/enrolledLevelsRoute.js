@@ -8,6 +8,5 @@ router.get('/get/languages', getLanguages);
 router.get('/get/levels', getLevelsByLanguage);
 router.get('/get/lessons', getLessonsbylevel)
 router.get('/get/enrolledLevels', getEnrolledLevels);
-router.get('/get/lessonsByEnrolledLevels', getLessonsByEnrolledLevels);
 
 module.exports = router;

@@ -109,5 +109,4 @@ const deleteUserAssessmentByID = async (req, res) => {
     }
 };
 
-
 module.exports = { getAllUserAssessment, getUserAssessmentByID, addUserAssessment, updateUserAssessmentbyID, deleteUserAssessmentByID };
