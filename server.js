@@ -23,7 +23,8 @@ app.use('/users', usersRouter);
 app.use('/enroll', enrolledLevelsRouter);
 app.use('/assessment', assessmentRoutes);
 app.use('/userAssessment', userAssessmentRoutes),
+  app.use('/attendance', attendanceRoute);
 
-  app.listen(PORT, () => {
-    console.log(`Server is running on PORT ${PORT}`);
-  });
+app.listen(PORT, () => {
+  console.log(`Server is running on PORT ${PORT}`);
+});
