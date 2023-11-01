@@ -12,6 +12,7 @@ const usersRouter = require('./routes/userRoute');
 const enrolledLevelsRouter = require('./routes/enrolledLevelsRoute');
 const assessmentRoutes = require('./routes/assessmentRoute');
 const userAssessmentRoutes = require('./routes/userAssessmentRoute');
+const attendanceRoute = require('./routes/attendanceRoute');
 
 app.use(cors());
 app.use(bodyParser.json());
