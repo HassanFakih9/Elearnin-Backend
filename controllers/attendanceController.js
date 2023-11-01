@@ -6,7 +6,7 @@ const addAttendance = async (req, res) => {
   const { attendance_day, lesson_id, user_id } = req.body;
   try {
     const result = await db.query(
-      `INSERT INTO  attendance (attendance_day , lesson_id , user_id) VALUES (?,?,?)`,
+      `INSERT INTO attendance (attendance_day , lesson_id , user_id) VALUES (?,?,?)`,
       [attendance_day, lesson_id, user_id]
     );
     console.log(result);
@@ -24,9 +24,25 @@ const addAttendance = async (req, res) => {
 };
 
 /*get*/
+const getAllAttendance = async (req, res) => {
+  try {
+      const [result] = await db.query(`SELECT * FROM attendance`);
+      res.status(200).json({
+          success: true,
+          message: 'Attendance retrieved successfully',
+          data: result,
+      });
+  } catch (error) {
+      res.status(400).json({
+          success: false,
+          message: 'Unable to retrieve attendance',
+          error,
+      });
+  }
+};
 const getAttendanceByID = async (req, res) => {
   try {
-    const [result] = await db.query(`SELECT * FROM lessons WHERE user_id = ?`, [
+    const [result] = await db.query(`SELECT * FROM attendance WHERE attendance_id = ?`, [
       req.params.id,
     ]);
     res.status(200).json({
@@ -43,12 +59,27 @@ const getAttendanceByID = async (req, res) => {
   }
 };
 
+const getAttendanceByUserID = async (req, res) => {
+  const userId = req.params.user_id;
+  const lessonId = req.params.lesson_id;
+
+  try {
+    const query = 'SELECT * FROM attendance WHERE user_id = ? AND lesson_id = ?';
+    const [rows] = await db.query(query, [userId, lessonId]);
+
+    res.status(200).json({ attendance: rows });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
 /*put*/
 const updateAttendance = async (req, res) => {
   const { attendance_day, lesson_id, user_id } = req.body;
   try {
     const result = await db.query(
-      `UPDATE attendance SET attendance_day=?, lesson_id=?, user_id=? WHERE lesson_id = ?`, [
+      `UPDATE attendance SET attendance_day=?, lesson_id=?, user_id=? WHERE attendance_id = ?`, [
       attendance_day, lesson_id, user_id, req.params.id
     ]);
 
@@ -56,7 +87,7 @@ const updateAttendance = async (req, res) => {
     console.log(result);
     res.status(201).json({
       success: true,
-      message: 'Attendance updates successfully',
+      message: 'Attendance updated successfully',
     });
   } catch (error) {
     res.status(400).json({
@@ -71,7 +102,7 @@ const updateAttendance = async (req, res) => {
 const deleteAttendance = async (req, res) => {
   try {
     const [result] = await db.query(
-      'DELETE FROM attendance WHERE user_id = ?',
+      'DELETE FROM attendance WHERE attendance_id = ?',
       [req.params.id]
     );
 
@@ -100,4 +131,4 @@ const deleteAttendance = async (req, res) => {
 
 
 
-module.exports = { addAttendance, getAttendanceByID, updateAttendance, deleteAttendance };
+module.exports = { addAttendance, getAllAttendance, getAttendanceByID, getAttendanceByUserID, updateAttendance, deleteAttendance };
