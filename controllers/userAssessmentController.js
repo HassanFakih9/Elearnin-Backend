@@ -109,4 +109,61 @@ const deleteUserAssessmentByID = async (req, res) => {
     }
 };
 
-module.exports = { getAllUserAssessment, getUserAssessmentByID, addUserAssessment, updateUserAssessmentbyID, deleteUserAssessmentByID };
+const lessonIDAssessment = async (req, res) => {
+    const studentId = req.params.studentId;
+    const lessonId = req.params.lessonId;
+
+    try {
+        const query1 = 'SELECT assessment_id FROM assessment WHERE lesson_id = ?';
+        const [results] = await db.query(query1, [lessonId]);
+
+        if (results.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Assessment not found for the selected lesson',
+            });
+        }
+
+        const assessmentId = results[0].assessment_id;
+
+        const query2 = 'SELECT * FROM assessment WHERE assessment_id = ?';
+        const [details] = await db.query(query2, [assessmentId]);
+
+        if (details.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Assessment details not found',
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Assessment fetched successfully',
+            data: details[0],
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+            error: error.message,
+        });
+    }
+};
+
+const submitUserAssessment = async (req, res) => {
+    const assessmentId = req.body.assessmentId;
+    const studentId = req.body.studentId;
+
+    try {
+        const query = 'INSERT INTO user_assessment (assessment_id, user_id, submission) VALUES (?, ?, "Submitted")';
+        await db.query(query, [assessmentId, studentId]);
+
+        res.status(200).json({ message: 'Assessment submitted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to submit the assessment' });
+    }
+};
+
+module.exports = { getAllUserAssessment, getUserAssessmentByID, addUserAssessment, updateUserAssessmentbyID, deleteUserAssessmentByID, lessonIDAssessment, submitUserAssessment };
