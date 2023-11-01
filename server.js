@@ -22,8 +22,8 @@ app.use('/languages', languagesRouter);
 app.use('/users', usersRouter);
 app.use('/enroll', enrolledLevelsRouter);
 app.use('/assessment', assessmentRoutes);
-app.use('/userAssessment', userAssessmentRoutes),
-  app.use('/attendance', attendanceRoutes);
+app.use('/userAssessment', userAssessmentRoutes);
+app.use('/attendance', attendanceRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
