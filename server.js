@@ -4,25 +4,13 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 app.use(cors());
-const usersRouter = require('./routes/users'); 
-const port = 5000;
 app.use(bodyParser.json());
+const usersRouter = require('./routes/users'); 
 app.use('/users', usersRouter);
 const studentsRouter = require('./routes/students'); 
 app.use('/students', studentsRouter);
-const connection = mysql.createConnection({
-  host: 'db4free.net',
-  user: 'hassanatsimplon',
-  password: '12ab34xy',
-  database: 'languagelearning',
-  port: 3306 
-});
-
-connection.connect((err) => {
-  if (err) throw err;
-  console.log('Connected to MySQL server!');
-});
-
+port=5000;
+const db = require('./config/db');
 
 
 app.post('/login', (req, res) => {
@@ -30,7 +18,7 @@ app.post('/login', (req, res) => {
 
   const query = `SELECT * FROM users WHERE email = ? AND password = ?`;
   
-  connection.query(query, [email, password], (err, result) => {
+  db.query(query, [email, password], (err, result) => {
     if (err) throw err;
 
     if (result.length === 0) {
@@ -68,7 +56,7 @@ app.post('/signup', (req, res) => {
   
  
     const checkQuery = `SELECT * FROM users WHERE email = ?`;
-    connection.query(checkQuery, [email], (err, result) => {
+    db.query(checkQuery, [email], (err, result) => {
       if (err) throw err;
   
       if (result.length > 0) {
@@ -76,7 +64,7 @@ app.post('/signup', (req, res) => {
       } else {
    
         const createUserQuery = `INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`;
-        connection.query(createUserQuery, [name, email, password, role], (err, result) => {
+        db.query(createUserQuery, [name, email, password, role], (err, result) => {
           if (err) throw err;
           res.json({ message: 'User created successfully!' });
         });

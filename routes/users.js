@@ -4,18 +4,8 @@ const cors = require('cors');
 
 const router = express.Router();
 router.use(cors());
-const databaseConnection = mysql.createConnection({
-  host: 'db4free.net',
-  user: 'hassanatsimplon',
-  password: '12ab34xy',
-  database: 'languagelearning',
-  port: 3306 
-});
+const connection = require('../config/db');
 
-databaseConnection.connect((err) => {
-  if (err) throw err;
-  console.log('Connected to MySQL server!');
-});
 
 router.use(express.json());
 
@@ -25,7 +15,7 @@ router.delete('/:id', (req, res) => {
   const { role } = req.query;
   const deleteUserQuery = `DELETE FROM users WHERE id = ? AND role = ?`;
 
-  databaseConnection.query(deleteUserQuery, [id, role], (err, result) => {
+  connection.query(deleteUserQuery, [id, role], (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).send('Error deleting user');
@@ -53,7 +43,7 @@ router.get('/:role', (req, res) => {
     getUsersQuery += ` AND email LIKE '%${email}%'`;
   }
 
-  databaseConnection.query(getUsersQuery, [role], (err, rows) => {
+  connection.query(getUsersQuery, [role], (err, rows) => {
     if (err) {
       console.error(err);
       res.status(500).send('Error fetching users');
@@ -69,7 +59,7 @@ router.put('/:id', (req, res) => {
 
   const updateUserQuery = `UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?`;
 
-  databaseConnection.query(
+  connection.query(
     updateUserQuery,
     [name, email, password, id],
     (err, result) => {
