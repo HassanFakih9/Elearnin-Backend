@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
-const { addEnroll, getLanguages, getLevelsByLanguage, getLessonsbylevel, getEnrolledLevels, getLessonsByEnrolledLevels } = require('../controllers/enrolledLevelsController');
+const { addEnroll, getLanguages, getLevelsByLanguage, getLessonsbylevel, getEnrolledLevels } = require('../controllers/enrolledLevelsController');
 
 router.post('/add/enroll/', addEnroll);
 router.get('/get/languages', getLanguages);

@@ -42,14 +42,14 @@ const signUp = async (req, res) => {
             return res.status(400).json({ message: 'Email already exists' });
         }
 
-        // Handle file upload (assuming imageUploader is an asynchronous function)
-        const profile_url = await imageUploader(req);
+        // // Handle file upload (assuming imageUploader is an asynchronous function)
+        // const profile_url = await imageUploader(req);
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const createUser = 'INSERT INTO users (name, email, password, role, profile_url) VALUES (?, ?, ?, ?, ?)';
-        const insertResult = await db.query(createUser, [name, email, hashedPassword, role, profile_url]);
+        const createUser = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)';
+        const insertResult = await db.query(createUser, [name, email, hashedPassword, role]);
         if (insertResult[0].affectedRows > 0)
             return res.json({ message: 'User created successfully!' });
         else
