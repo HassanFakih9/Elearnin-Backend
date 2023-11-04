@@ -84,5 +84,28 @@ const getEnrolledLevels = async (req, res) => {
     }
 };
 
+const getLanguageByStudent = async (req, res) => {
+    try {
+      const [result] = await db.query(`
+      SELECT enrolledLevels.level_id, levels.language_id, levels.level_id, levels.level_name, languages.language_id, enrolledLevels.user_id, languages.language_name
+      FROM enrolledLevels 
+          LEFT JOIN levels ON enrolledLevels.level_id = levels.level_id 
+          LEFT JOIN languages ON levels.language_id = languages.language_id
+      WHERE enrolledLevels.user_id = ?;`, [
+        req.params.id,
+      ]);
+      res.status(200).json({
+        success: true,
+        message: 'Data retrieved successfully',
+        data: result,
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: 'Unable to get data',
+        error,
+      });
+    }
+  };
 
-module.exports = { addEnroll, getLanguages, getLevelsByLanguage, getLessonsbylevel, getEnrolledLevels };
+module.exports = { addEnroll, getLanguages, getLevelsByLanguage, getLessonsbylevel, getEnrolledLevels, getLanguageByStudent };

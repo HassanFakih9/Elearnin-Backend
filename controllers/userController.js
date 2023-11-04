@@ -18,7 +18,7 @@ const logIn = async (req, res) => {
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (passwordMatch) {
-            return res.json({ role: user.role });
+            return res.json({ role: user.role, id: user.id });
         } else {
             return res.status(401).json({ message: 'Invalid password' });
         }
