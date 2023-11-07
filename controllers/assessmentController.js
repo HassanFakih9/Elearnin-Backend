@@ -37,19 +37,19 @@ const getAssessmentByID = async (req, res) => {
 };
 
 const addAssessment = async (req, res) => {
-    const { assesment_title, duration, lesson_id, question } = req.body;
+    const { assessment_title, duration, lesson_id, question } = req.body;
     console.log(req.body);
     try {
         const result = await db.query(
             `INSERT INTO assessment (assessment_title, duration, lesson_id, question) VALUES (?,?,?,?);`,
-            [assesment_title, duration, lesson_id, question]
+            [assessment_title, duration, lesson_id, question]
         );
         console.log(result);
         res.status(200).json({
             success: true,
             message: 'Assessment added successfully',
         });
-    } catch (error) {
+    } catch ( error) {
         res.status(400).json({
             success: false,
             message: 'Unable to add new assessment',
@@ -109,4 +109,34 @@ const deleteAssessmentByID = async (req, res) => {
     }
 };
 
-module.exports = { getAllAssessment, getAssessmentByID, addAssessment, updateAssessmentbyID, deleteAssessmentByID };
+const getAssessmentByLesson = async (req, res) => {
+    try {
+        const { lesson_id  } = req.params;
+        
+        const [result] = await db.query('SELECT * FROM assessment WHERE lesson_id = ?', [lesson_id ]);
+        
+
+        if (result.length > 0) {
+            res.status(200).json({
+                success: true,
+                message: 'Assessments retrieved successfully',
+                data: result,
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: 'No assessments found for the lesson.',
+            });
+        }
+    } catch (error) {
+        console.error('Error in getAssessmentByLesson:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+            error: error.message,
+        });
+    }
+};
+
+
+module.exports = { getAllAssessment, getAssessmentByID, addAssessment, updateAssessmentbyID, deleteAssessmentByID, getAssessmentByLesson };
