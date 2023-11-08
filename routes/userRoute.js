@@ -9,7 +9,7 @@ const { logIn, signUp, deleteUser, updateUser, getUserById, getAllUsers, getUser
 router.post('/login', logIn);
 router.post('/signup', upload.single('image'), signUp);
 router.delete('/delete/:id', deleteUser);
-router.put('/update/:id', updateUser);
+router.put('/update/:id', upload.single('image'), updateUser);
 router.get('/get/:id', getUserById);
 router.get('/getAll', getAllUsers);
 router.get('/getAll/:role', getUsersByRole);
