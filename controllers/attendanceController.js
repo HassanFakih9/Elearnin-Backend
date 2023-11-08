@@ -128,7 +128,61 @@ const deleteAttendance = async (req, res) => {
   }
 };
 
+//post
+const attendancebyuserandlesson= async (req, res) => {
+  try {
+    const { lessonId, userId } = req.body;
+    const attendanceDay = new Date(); // Get the current date
 
+    // Insert a new attendance record into the 'attendance' table
+    const result = await db.query(
+      'INSERT INTO attendance (attendance_day, lesson_id, user_id) VALUES (?, ?, ?)',
+      [attendanceDay, lessonId, userId]
+    );
 
+    res.json({ success: true, message: 'Attendance recorded successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Failed to mark attendance' });
+  }
+};
 
-module.exports = { addAttendance, getAllAttendance, getAttendanceByID, getAttendanceByUserID, updateAttendance, deleteAttendance };
+//get
+const languagetaughtbyteacher= async(req,res)=>{
+try {
+  const teacherId = req.query.teacherId; // You need to provide the teacher's ID
+  //  fetch languages taught by the teacher
+  const query = `
+    SELECT DISTINCT l.language_id, l.language_name
+    FROM languages l
+    WHERE l.teacher_id = ?;
+  `;  
+  const results= await db.query(query, [teacherId]);
+  res.json({ languages: results });
+} catch (error) {
+  console.error('Error fetching languages taught by the teacher:', error);
+  res.status(500).json({ error: 'Internal server error' });
+}
+}
+
+//get
+
+const getattendancebylesson= async(req,res)=>{
+  try {
+    const lessonId = req.query.lessonId;
+    //  fetch attendance records for the selected lesson
+    const query = `
+      SELECT a.attendance_day, u.name AS student_name
+      FROM attendance a
+      JOIN users u ON a.user_id = u.id
+      WHERE a.lesson_id = ?;
+    `;
+    const results= await db.query(query, [lessonId]);
+    res.json({ attendance: results });
+  } catch (error) {
+    console.error('Error fetching attendance records:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+module.exports = { addAttendance, getAllAttendance, getAttendanceByID, getAttendanceByUserID,
+   updateAttendance, deleteAttendance,attendancebyuserandlesson,languagetaughtbyteacher,getattendancebylesson };
