@@ -152,7 +152,8 @@ const languagetaughtbyteacher= async(req,res)=>{
 try {
   const teacherId = req.query.teacherId; 
   //  fetch languages taught by the teacher
-  console.log('Teacher ID:', teacherId);
+ 
+  
   const query = `
     SELECT DISTINCT l.language_id, l.language_name
     FROM languages l
@@ -160,7 +161,7 @@ try {
   `;  
   const results= await db.query(query, [teacherId]);
   res.json({ languages: results });
-  console.log('languages:', results);
+  
 } catch (error) {
   console.error('Error fetching languages taught by the teacher:', error);
   res.status(500).json({ error: 'Internal server error' });
