@@ -129,7 +129,7 @@ const deleteAttendance = async (req, res) => {
 };
 
 //post
-const attendancebyuserandlesson= async (req, res) => {
+const markstudentattendance= async (req, res) => {
   try {
     const { lessonId, userId } = req.body;
     const attendanceDay = new Date(); // Get the current date
@@ -150,8 +150,9 @@ const attendancebyuserandlesson= async (req, res) => {
 //get
 const languagetaughtbyteacher= async(req,res)=>{
 try {
-  const teacherId = req.query.teacherId; // You need to provide the teacher's ID
+  const teacherId = req.query.teacherId; 
   //  fetch languages taught by the teacher
+  console.log('Teacher ID:', teacherId);
   const query = `
     SELECT DISTINCT l.language_id, l.language_name
     FROM languages l
@@ -159,6 +160,7 @@ try {
   `;  
   const results= await db.query(query, [teacherId]);
   res.json({ languages: results });
+  console.log('languages:', results);
 } catch (error) {
   console.error('Error fetching languages taught by the teacher:', error);
   res.status(500).json({ error: 'Internal server error' });
@@ -184,5 +186,40 @@ const getattendancebylesson= async(req,res)=>{
     res.status(500).json({ error: 'Internal server error' });
   }
 }
+/// fetch languages for the selected level
+const getlanguagelevels= async (req, res) => {
+  try {
+    const languageId = req.query.languageId;
+    // Replace this with actual SQL query to fetch levels for the selected language
+    const query = `
+      SELECT level_id, level_name
+      FROM levels
+      WHERE language_id = ?;
+    `;
+    const results=await db.query(query, [languageId]); 
+    res.json({ levels: results });  
+  } catch (error) {
+    console.error('Error fetching levels:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+const getlevellessons= async (req, res) => {
+  try {
+    const levelId = req.query.levelId;
+  // Replace this with actual SQL query to fetch lessons for the selected level
+  const query = `
+    SELECT lesson_id, lesson_name
+    FROM lessons
+    WHERE level_id = ?;
+  `;
+    const results=await db.query(query, [levelId]); 
+    res.json({ lessons: results }); 
+  } catch (error) {
+    console.error('Error fetching lessons:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
 module.exports = { addAttendance, getAllAttendance, getAttendanceByID, getAttendanceByUserID,
-   updateAttendance, deleteAttendance,attendancebyuserandlesson,languagetaughtbyteacher,getattendancebylesson };
+   updateAttendance, deleteAttendance,markstudentattendance,languagetaughtbyteacher,
+   getattendancebylesson,getlanguagelevels,getlevellessons };
